@@ -8,56 +8,83 @@ To create an ioslides presentation\index{ioslides} from R Markdown, you specify 
 
 ````markdown
 ---
-title: "Habits"
-author: John Doe
-date: March 22, 2005
+title: "Performance Testing and Comparative Benchmarking for Data.Table"
+author: Doris Amoakohene
+date: April 13, 2024
 output: ioslides_presentation
 ---
 
-# In the morning
+# Benchmarking Performance in the data.table Package
 
-## Getting up
 
-- Turn off alarm
-- Get out of bed
+## Introduction
 
-## Breakfast
+Understanding Performance Regressions in data.table
 
-- Eat eggs
-- Drink coffee
+Introduction to the atime package for performance analysis
 
-# In the evening
+Creating Relevant Performance Tests
 
-## Dinner
+Analyzing Code Branches using atime
 
-- Eat spaghetti
-- Drink wine
+Comparing data.table with Python Packages
 
----
+Enhancing data.table: Educational Resources
 
-`r ''````{r, cars, fig.cap="A scatterplot.", echo=FALSE}
-plot(cars)
+Conclusion
+
+
+## Overview of data.table
+
+data.table is an extension of R’s data.frame, designed to handle large datasets efficiently
+
+Several major version changes have been introduced, aiming to enhance speed and efficiency. These changes include algorithmic optimizations, memory management improvements, and enhancements to parallel processing capabilities.
+
+To evaluate data.table performance, it is essential to employ benchmarking methodologies. The approach, I used to utilize the atime and  atime_versions function from the atime package, which measures the actual execution time of specific operations.
+
+
+## Benchmarking
+
+The time function allows to compare and visualize the asymptotic performance (time and memory usage) of the different functions 
+
+The atime_versions allows for accurate comparisons between different versions of the data.table package, by benchmarking against time and memory usage and also giving a graphical visualization of the results
+
+In most benchmarking techniques, such as airspeed velocity, Conbench, and Touchstone, a single or constant value of N is typically used to measure performance. However, when it comes to benchmarking the performance of data.table, N can vary or follow a specific sequence depending on the number of data points being analyzed. This approach allows researchers and developers to evaluate the scalability and efficiency of data.table under different data sizes, providing a more comprehensive understanding of its performance characteristics. 
+
+
+# atime code 
+
+```
+ atime::atime(    
+N = 10^seq(1,7),  
+setup = {    
+***
+}, 
+ seconds.limit = 1,  
+expr1,
+Expr 2,
+Expr3,
+)
+
 ```
 
-## Going to sleep
+# atime_versions code
 
-- Get in bed
-- Count sheep
-````
+```
+atime::atime_versions( 
+pkg.path=tdir, 
+pkg.edit.fun= pkg.edit.fun, 
+N=10ˆseq(1,20), 
+setup={ set.seed(108) d <- data.table( id3 = sample(c(seq.int(N*0.9), sample(N*0.9, N*0.1, TRUE))), 
+v1 = sample(5L, N, TRUE), v2 = sample(5L, N, TRUE)) 
+}, 
+expr=data.table:::`[.data.table`(d, , (max(v1)-min(v2)), by = id3),
+ "Before"="15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
+ "Regression"="6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
+ "Fixed"="ba32f3cba38ec270587e395f6e6c26a80be36be6“
 
-```{r ioslides, echo=FALSE, fig.cap='Two sample slides in an ioslides presentation.', out.width='49%', fig.show='hold'}
-knitr::include_graphics(c('images/ioslides-1.png', 'images/ioslides-2.png'), dpi = NA)
 ```
 
-You can add a subtitle to a slide or section by including text after the pipe (`|`) character. For example:
-
-```markdown
-## Getting up | What I like to do first thing
-```
-
-### Display modes
-
-The following single character keyboard shortcuts enable alternate display modes:
 
 - `'f'`: enable fullscreen mode
 
